@@ -533,7 +533,6 @@ body::before {
         width: 100%;
         padding: 15px;
         background: rgba(42, 43, 44, 0.95);
-        /* Remove sticky positioning, will stay at bottom due to flex layout */
     }
 
     .terminal-input {
@@ -546,9 +545,16 @@ body::before {
         white-space: nowrap;
     }
 
-    /* Adjust welcome content */
+    /* Add same padding to welcome container */
     .welcome-container {
-        padding: 15px 0;
+        padding-top: 20px;
+        padding-bottom: 40px;
+    }
+
+    .messages-container {
+        padding-top: 20px;
+        padding-bottom: 40px;
+        /* Larger bottom padding for better visibility of last message */
     }
 
     .help-content p {
