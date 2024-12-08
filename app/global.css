@@ -20,7 +20,7 @@
 body {
     margin: 0;
     padding: 0;
-    background-image: url('/assets/bg.jpg');
+    background-image: url('./assets/bg.jpg');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
@@ -101,7 +101,10 @@ body::before {
 
 /* Messages section with improved scrolling */
 .terminal-messages {
-    background: transparent;
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 20px;
+    background-color: var(--terminal-bg);
 }
 
 .terminal-messages.populated {
