@@ -4,6 +4,8 @@ const nextConfig = {
   experimental: {
     appDir: true,
   },
+  cleanDistDir: true,
+  pages: false, // explicitly disable pages directory
 };
 
 module.exports = nextConfig;
