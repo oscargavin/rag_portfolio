@@ -513,11 +513,6 @@ body::before {
         padding: 15px;
     }
 
-    /* Adjust messages container height */
-    .terminal-messages.populated {
-        height: calc(100dvh - 180px);
-    }
-
     .response {
         padding: 8px 15px;
         font-size: 0.9rem;
