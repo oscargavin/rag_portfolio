@@ -484,9 +484,13 @@ body::before {
 @media screen and (max-width: 768px) {
     .terminal-main {
         width: 100%;
-        height: 100vh;
+        /* Change these height values */
+        height: 100dvh;
+        /* dynamic viewport height - modern browsers */
         margin: 0;
         border-radius: 0;
+        /* Add this to create padding for the bottom */
+        padding-bottom: env(safe-area-inset-bottom);
     }
 
     .terminal-header {
@@ -507,6 +511,11 @@ body::before {
 
     .terminal-messages {
         padding: 15px;
+    }
+
+    /* Adjust messages container height */
+    .terminal-messages.populated {
+        height: calc(100dvh - 180px);
     }
 
     .response {
