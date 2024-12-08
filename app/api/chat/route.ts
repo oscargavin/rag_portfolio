@@ -29,7 +29,10 @@ const COMMAND_TEMPLATES = {
     challenges overcome, and outcomes achieved.`,
 
     contact: `Share your professional contact information and preferred methods 
-    of communication.`
+    of communication.`,
+
+    "download_cv": `Here's my CV! The download should start automatically. 
+    If it doesn't, you can try the command again or contact me directly.`
 }
 
 export async function POST(req: Request) {
@@ -39,8 +42,20 @@ export async function POST(req: Request) {
 
         // Check if it's a command
         const cleanMessage = latestMessage.toLowerCase().trim()
+
+        // Special command handling
+        if (cleanMessage === 'download cv') {
+            return new Response(JSON.stringify({
+                message: "Initiating CV download... If the download doesn't start automatically, check your browser settings or try again.",
+                download: true,
+                file: "/cv.pdf"
+            }))
+        }
+
+        // Normal flow for other commands
         const messageToProcess = COMMAND_TEMPLATES[cleanMessage] || latestMessage
 
+        // Rest of your existing code...
         let docContext = ""
 
         const embedding = await openai.embeddings.create({

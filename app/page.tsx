@@ -18,15 +18,113 @@ const parseMarkdown = (text: string) => {
 }
 
 const Home = () => {
-    const { append, isLoading, messages, input, handleInputChange, handleSubmit } = useChat()
+    const { append, isLoading, messages, input, handleInputChange, setMessages } = useChat()
     const messagesEndRef = useRef(null)
 
-    const scrollToBottom = () => {
-        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+    // Unified command and submit handler
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault()
+        if (!input.trim()) return
+
+        const userInput = input.trim() // Store input before clearing
+
+        // Clear input immediately after submission
+        handleInputChange({ target: { value: '' } } as React.ChangeEvent<HTMLInputElement>)
+
+        // Show user input immediately
+        append({
+            content: userInput,
+            role: "user"
+        })
+
+        if (userInput.toLowerCase() === 'download cv') {
+            try {
+                const response = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        messages: [...messages, { content: userInput, role: "user" }]
+                    })
+                })
+
+                const data = await response.json()
+
+                if (data.download) {
+                    // Trigger download
+                    const link = document.createElement('a')
+                    link.href = data.file
+                    link.download = 'oscar_gavin_cv.pdf'
+                    document.body.appendChild(link)
+                    link.click()
+                    document.body.removeChild(link)
+
+                    // Show confirmation message only
+                    append({
+                        content: "📄 CV download started. The file should begin downloading automatically.",
+                        role: "assistant"
+                    })
+                }
+            } catch (error) {
+                console.error('Error:', error)
+                append({
+                    content: "❌ Sorry, there was an error downloading the CV. Please try again.",
+                    role: "assistant"
+                })
+            }
+            return
+        }
+
+        // Handle all other commands through normal chat flow
+        try {
+            const response = await fetch('/api/chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    messages: [...messages, { content: input, role: "user" }]
+                })
+            })
+
+            if (!response.ok) {
+                throw new Error('Failed to get response')
+            }
+
+            // Let the useChat hook handle the streaming response
+            return response
+        } catch (error) {
+            console.error('Error:', error)
+            append({
+                content: "❌ Sorry, there was an error processing your request. Please try again.",
+                role: "assistant"
+            })
+        }
     }
 
+    // Keyboard shortcuts
     useEffect(() => {
-        scrollToBottom()
+        const handleKeyDown = (e: KeyboardEvent) => {
+            // Ctrl + L to clear screen
+            if (e.ctrlKey && e.key === 'l') {
+                e.preventDefault()
+                setMessages([])
+            }
+            // Ctrl + C to cancel/clear input
+            if (e.ctrlKey && e.key === 'c') {
+                e.preventDefault()
+                const cancelMessage = {
+                    content: "^C",
+                    role: "user" as const
+                }
+                append(cancelMessage)
+            }
+        }
+
+        window.addEventListener('keydown', handleKeyDown)
+        return () => window.removeEventListener('keydown', handleKeyDown)
+    }, [setMessages, append])
+
+    // Auto-scroll
+    useEffect(() => {
+        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
     }, [messages])
 
     const noMessages = !messages || messages.length === 0
@@ -70,8 +168,13 @@ const Home = () => {
                             <p>$ skills        - View technical skills</p>
                             <p>$ projects      - Browse recent projects</p>
                             <p>$ contact       - Get contact information</p>
+                            <p>$ download cv   - Download my CV</p>
                             <p>$ clear         - Clear terminal history</p>
                             <p>$ help          - Show this help message</p>
+                            <br />
+                            <p>Keyboard shortcuts:</p>
+                            <p>Ctrl + L        - Clear screen</p>
+                            <p>Ctrl + C        - Cancel current operation</p>
                         </div>
                     </div>
                 ) : (
