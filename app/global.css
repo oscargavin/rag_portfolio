@@ -484,13 +484,12 @@ body::before {
 @media screen and (max-width: 768px) {
     .terminal-main {
         width: 100%;
-        /* Change these height values */
-        height: 100dvh;
-        /* dynamic viewport height - modern browsers */
+        height: 100%;
+        min-height: 100vh;
         margin: 0;
         border-radius: 0;
-        /* Add this to create padding for the bottom */
-        padding-bottom: env(safe-area-inset-bottom);
+        display: flex;
+        flex-direction: column;
     }
 
     .terminal-header {
@@ -510,7 +509,16 @@ body::before {
     }
 
     .terminal-messages {
-        padding: 15px;
+        flex: 1;
+        height: auto;
+        min-height: 0;
+        /* Important for scroll to work */
+        overflow-y: auto;
+    }
+
+    .terminal-messages.populated {
+        height: auto;
+        /* Remove fixed height */
     }
 
     .response {
@@ -525,8 +533,12 @@ body::before {
     }
 
     .terminal-form {
+        position: sticky;
+        bottom: 0;
+        width: 100%;
         padding: 15px;
-        gap: 6px;
+        background: rgba(42, 43, 44, 0.95);
+        /* Slightly more opaque for better contrast */
     }
 
     .terminal-input {
@@ -625,4 +637,23 @@ body::before {
 .response {
     word-wrap: break-word;
     overflow-wrap: break-word;
+}
+
+/* Add these new styles */
+.messages-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    /* Important for scroll to work */
+}
+
+/* iOS specific fixes */
+@supports (-webkit-touch-callout: none) {
+    .terminal-main {
+        min-height: -webkit-fill-available;
+    }
+
+    .terminal-messages {
+        height: auto;
+    }
 }
