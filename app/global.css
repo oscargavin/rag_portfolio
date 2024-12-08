@@ -20,7 +20,10 @@
 body {
     margin: 0;
     padding: 0;
-    background-color: #000;
+    background-image: url('/assets/bg.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
     color: var(--terminal-text);
     min-height: 100vh;
     display: flex;
@@ -28,29 +31,61 @@ body {
     align-items: center;
 }
 
+/* Add this after body */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg,
+            rgba(0, 0, 0, 0.7),
+            rgba(0, 0, 0, 0.5));
+    z-index: 0;
+}
+
 /* Main terminal container */
 .terminal-main {
+    position: relative;
     width: 90%;
     max-width: 1000px;
     height: 85vh;
     margin: 20px auto;
-    background-color: var(--terminal-bg);
+    background: rgba(26, 27, 28, 0.8);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     border-radius: 10px;
-    box-shadow: 0 10px 30px var(--terminal-shadow);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
     overflow: hidden;
     display: flex;
     flex-direction: column;
+    z-index: 1;
 }
 
 /* Terminal header with modern styling */
 .terminal-header {
-    background-color: var(--terminal-header);
+    background: rgba(42, 43, 44, 0.8);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     padding: 15px 20px;
-    border-bottom: 1px solid var(--terminal-border);
     display: flex;
     justify-content: space-between;
     align-items: center;
     position: relative;
+}
+
+.terminal-form {
+    padding: 20px;
+    background: rgba(42, 43, 44, 0.8);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
 .terminal-header h1 {
@@ -66,10 +101,7 @@ body {
 
 /* Messages section with improved scrolling */
 .terminal-messages {
-    flex-grow: 1;
-    overflow-y: auto;
-    padding: 20px;
-    background-color: var(--terminal-bg);
+    background: transparent;
 }
 
 .terminal-messages.populated {
