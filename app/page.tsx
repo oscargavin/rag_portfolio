@@ -22,7 +22,7 @@ const parseMarkdown = (text: string) => {
 const Home = () => {
   const { append, isLoading, messages, input, handleInputChange, setMessages } =
     useChat();
-  const messagesEndRef = useRef(null);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
   const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
 
   // Handle keyboard visibility
@@ -172,13 +172,26 @@ const Home = () => {
   };
 
   return (
-    <main className="terminal-main">
-      {/* Terminal Controls */}
-      <div className="terminal-header">
-        <div className="terminal-controls">
-          <span className="control-dot red"></span>
-          <span className="control-dot yellow"></span>
-          <span className="control-dot green"></span>
+    <main className="terminal-main" role="main">
+      {/* Terminal Controls - Add aria-label */}
+      <div className="terminal-header" role="banner">
+        <div className="terminal-controls" aria-label="Window controls">
+          {/* Make decorative dots not focusable */}
+          <span
+            className="control-dot red"
+            aria-hidden="true"
+            role="presentation"
+          ></span>
+          <span
+            className="control-dot yellow"
+            aria-hidden="true"
+            role="presentation"
+          ></span>
+          <span
+            className="control-dot green"
+            aria-hidden="true"
+            role="presentation"
+          ></span>
         </div>
         <div className="terminal-title-section">
           <h1>Oscar Gavin Terminal [Version 1.0.0]</h1>
@@ -186,11 +199,14 @@ const Home = () => {
         </div>
       </div>
 
-      {/* Messages Container */}
+      {/* Messages Container - Add appropriate ARIA labels */}
       <section
         className={`terminal-messages ${noMessages ? "" : "populated"} ${
           isKeyboardVisible ? "keyboard-visible" : ""
         }`}
+        role="log"
+        aria-live="polite"
+        aria-label="Terminal output"
       >
         {noMessages ? (
           <div className="welcome-container">
@@ -198,29 +214,34 @@ const Home = () => {
               Welcome to Oscar Gavin's terminal interface. Ask me anything about
               my skills, experience, or interests.
             </p>
-            <p className="prompt-text">visitor@oscar:~$</p>
-            <div className="help-content">
-              <p>Available commands:</p>
-              <p>$ about - Learn about Oscar Gavin</p>
-              <p>$ skills - View technical skills</p>
-              <p>$ projects - Browse recent projects</p>
-              <p>$ contact - Get contact information</p>
-              <p>$ download cv - Download my CV</p>
-              <p>$ clear - Clear terminal history</p>
-              <p>$ help - Show this help message</p>
-              <br />
-              <p>Keyboard shortcuts:</p>
-              <p>Ctrl + L - Clear screen</p>
-              <p>Ctrl + C - Cancel current operation</p>
+            <p className="prompt-text" aria-hidden="true">
+              visitor@oscar:~$
+            </p>
+            <div className="help-content" role="list">
+              <p role="listitem">Available commands:</p>
+              {/* Add role="listitem" to each command */}
+              <p role="listitem">$ about - Learn about Oscar Gavin</p>
+              <p role="listitem">$ skills - View technical skills</p>
+              <p role="listitem">$ projects - Browse recent projects</p>
+              <p role="listitem">$ contact - Get contact information</p>
+              <p role="listitem">$ download cv - Download my CV</p>
+              <p role="listitem">$ clear - Clear terminal history</p>
+              <p role="listitem">$ help - Show this help message</p>
             </div>
           </div>
         ) : (
           <div className="messages-container">
             {messages.map((message, index) => (
-              <div key={`message-${index}`} className="terminal-line">
+              <div
+                key={`message-${index}`}
+                className="terminal-line"
+                role="listitem"
+              >
                 {message.role === "user" ? (
                   <div className="user-input">
-                    <span className="prompt">visitor@oscar:~$</span>
+                    <span className="prompt" aria-hidden="true">
+                      visitor@oscar:~$
+                    </span>
                     <span className="command">{message.content}</span>
                   </div>
                 ) : (
@@ -234,25 +255,35 @@ const Home = () => {
               </div>
             ))}
             {isLoading && (
-              <div className="loading-cursor">
-                <span></span>
+              <div
+                className="loading-cursor"
+                role="status"
+                aria-label="Loading"
+              >
+                <span aria-hidden="true"></span>
               </div>
             )}
-            <div ref={messagesEndRef} />
+            <div ref={messagesEndRef} tabIndex={-1} />
           </div>
         )}
       </section>
 
-      {/* Input Form */}
-      <form onSubmit={handleSubmit} className="terminal-form">
-        <span className="prompt">visitor@oscar:~$</span>
+      {/* Input Form - Add appropriate ARIA labels */}
+      <form onSubmit={handleSubmit} className="terminal-form" role="form">
+        <label htmlFor="terminal-input" className="sr-only">
+          Enter command
+        </label>
+        <span className="prompt" aria-hidden="true">
+          visitor@oscar:~$
+        </span>
         <input
+          id="terminal-input"
           type="text"
           value={input}
           onChange={handleInputChange}
           className="terminal-input"
           placeholder="Type a command..."
-          style={{ maxWidth: "100%" }}
+          aria-label="Terminal input"
         />
       </form>
     </main>

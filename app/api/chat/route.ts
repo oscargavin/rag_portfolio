@@ -51,7 +51,6 @@ export async function POST(req: Request) {
                 file: "/cv.pdf"
             }))
         }
-
         // Normal flow for other commands
         const messageToProcess = COMMAND_TEMPLATES[cleanMessage] || latestMessage
 
