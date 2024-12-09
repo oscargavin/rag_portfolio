@@ -252,6 +252,7 @@ const Home = () => {
           onChange={handleInputChange}
           className="terminal-input"
           placeholder="Type a command..."
+          style={{ maxWidth: "100%" }}
         />
       </form>
     </main>

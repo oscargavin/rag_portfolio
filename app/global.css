@@ -478,80 +478,77 @@ body::before {
     position: relative;
 }
 
-/* Mobile-specific layout fixes */
+/* Add these styles to prevent horizontal overflow on mobile */
 @media screen and (max-width: 768px) {
+    /* Prevent horizontal scroll on main container */
     .terminal-main {
+        overflow-x: hidden;
+        max-width: 100vw;
         width: 100%;
-        height: 100vh;
-        height: 100dvh; /* Use dynamic viewport height */
-        margin: 0;
-        border-radius: 0;
-        display: flex;
-        flex-direction: column;
-        position: fixed; /* Change to fixed */
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
     }
 
-    .terminal-header {
-        flex-shrink: 0; /* Prevent header from shrinking */
-    }
-
-    .terminal-messages {
-        flex: 1;
-        overflow-y: auto;
-        padding: 15px;
-        position: relative; /* Change from absolute to relative */
-        height: auto; /* Remove fixed height */
-    }
-
+    /* Fix command line container */
     .terminal-form {
-        flex-shrink: 0; /* Prevent form from shrinking */
-        position: relative; /* Change from fixed to relative */
-        padding: 15px;
-        background: rgba(42, 43, 44, 0.95);
-        z-index: 10;
+        display: flex;
+        flex-wrap: nowrap;
+        align-items: center;
         width: 100%;
+        max-width: 100%;
+        overflow: hidden;
     }
 
-    /* Add padding for devices with home indicator */
-    @supports (padding: env(safe-area-inset-bottom)) {
-        .terminal-form {
-            padding-bottom: max(15px, env(safe-area-inset-bottom));
-        }
+    /* Make prompt text non-shrinkable */
+    .prompt {
+        flex-shrink: 0;
+        white-space: nowrap;
     }
 
-    /* Ensure content doesn't get hidden behind keyboard */
-    .messages-container {
-        padding-bottom: env(safe-area-inset-bottom, 20px);
-    }
-
-    .welcome-container {
-        padding-bottom: env(safe-area-inset-bottom, 20px);
-    }
-}
-
-/* Improve mobile input handling */
-@media screen and (max-width: 599px) {
+    /* Make input field properly constrain and wrap */
     .terminal-input {
-        font-size: 16px; /* Prevent iOS zoom on focus */
+        flex: 1;
+        min-width: 0; /* This is crucial for flex text overflow */
+        width: 100%;
+        overflow-x: auto; /* Allow scrolling within input if needed */
+        white-space: pre-wrap;
+        word-break: break-word;
     }
-    
-    /* Add padding when virtual keyboard is visible */
-    .terminal-messages.keyboard-visible {
-        padding-bottom: 270px; /* Approximate height of virtual keyboard */
+
+    /* Ensure user input wraps properly */
+    .command {
+        white-space: pre-wrap;
+        word-break: break-word;
+        max-width: 100%;
+    }
+
+    /* Fix user input line display */
+    .user-input {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        width: 100%;
+        max-width: 100%;
+    }
+
+    /* Ensure messages container doesn't overflow */
+    .terminal-messages {
+        max-width: 100vw;
+        overflow-x: hidden;
+    }
+
+    /* Fix response text wrapping */
+    .response {
+        white-space: pre-wrap;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        max-width: 100%;
     }
 }
 
-/* Fix iOS height issues */
+/* Add specific iOS fixes */
 @supports (-webkit-touch-callout: none) {
-    .terminal-main {
-        height: -webkit-fill-available;
-    }
-    
-    .terminal-messages {
-        height: -webkit-fill-available;
+    .terminal-input {
+        width: 0; /* This forces the input to properly shrink on iOS */
+        min-width: 0;
+        flex: 1;
     }
 }
