@@ -542,6 +542,26 @@ body::before {
     .welcome-container {
         padding-bottom: env(safe-area-inset-bottom, 20px);
     }
+
+    .user-input {
+        display: flex;
+        flex-wrap: nowrap; /* Prevent prompt from wrapping */
+        align-items: flex-start; /* Align items to top */
+        gap: 8px;
+        width: 100%;
+    }
+    
+    .prompt {
+        flex-shrink: 0; /* Prevent prompt from shrinking */
+        white-space: nowrap; /* Keep prompt on one line */
+    }
+    
+    .command {
+        word-break: break-word; /* Better word breaking for commands */
+        white-space: pre-wrap; /* Preserve whitespace but allow wrapping */
+        flex: 1; /* Take remaining space */
+        min-width: 0; /* Allow text to wrap instead of overflow */
+    }
 }
 
 /* Improve mobile input handling */
