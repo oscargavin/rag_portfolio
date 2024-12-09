@@ -478,49 +478,95 @@ body::before {
     position: relative;
 }
 
+/* Mobile-specific layout fixes */
 @media screen and (max-width: 768px) {
     .terminal-main {
+        overflow-x: hidden;
+        max-width: 100vw;
         width: 100%;
-        height: 100vh;
-        height: 100dvh; /* dynamic viewport height */
-        margin: 0;
-        border-radius: 0;
-        position: relative;
+    }
+
+    .terminal-header {
+        flex-shrink: 0; /* Prevent header from shrinking */
+    }
+
+    .terminal-input {
+        flex: 1;
+        min-width: 0; /* This is crucial for flex text overflow */
+        width: 100%;
+        overflow-x: auto; /* Allow scrolling within input if needed */
+        white-space: pre-wrap;
+        word-break: break-word;
     }
 
     .terminal-messages {
-        position: absolute;
-        top: 60px; /* Height of header */
-        /* Adjust bottom space based on safe area */
-        bottom: calc(70px + env(safe-area-inset-bottom, 0px));
-        left: 0;
-        right: 0;
-        overflow-y: auto;
-        padding: 15px;
+        max-width: 100vw;
+        overflow-x: hidden;
+    }
+
+    /* Fix response text wrapping */
+    .response {
+        white-space: pre-wrap;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        max-width: 100%;
     }
 
     .terminal-form {
-        position: fixed;
-        bottom: env(safe-area-inset-bottom, 0px); /* Move up by safe area amount */
-        left: 0;
-        right: 0;
+        display: flex;
+        flex-wrap: nowrap;
+        align-items: center;
         width: 100%;
-        padding: 15px;
-        background: rgba(42, 43, 44, 0.95);
-        z-index: 10;
+        max-width: 100%;
+        overflow: hidden;
     }
 
-    /* Add for devices with bottom bars */
-    @supports (padding-bottom: env(safe-area-inset-bottom)) {
+    .prompt {
+        flex-shrink: 0;
+        white-space: nowrap;
+    }
+
+    .command {
+        white-space: pre-wrap;
+        word-break: break-word;
+        max-width: 100%;
+    }
+
+    /* Fix user input line display */
+    .user-input {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        width: 100%;
+        max-width: 100%;
+    }
+
+    /* Add padding for devices with home indicator */
+    @supports (padding: env(safe-area-inset-bottom)) {
         .terminal-form {
-            padding-bottom: max(15px, env(safe-area-inset-bottom, 15px));
+            padding-bottom: max(15px, env(safe-area-inset-bottom));
         }
     }
 
-    /* Add padding to content to prevent overlap */
-    .messages-container,
+    /* Ensure content doesn't get hidden behind keyboard */
+    .messages-container {
+        padding-bottom: env(safe-area-inset-bottom, 20px);
+    }
+
     .welcome-container {
-        padding-bottom: 20px;
+        padding-bottom: env(safe-area-inset-bottom, 20px);
+    }
+}
+
+/* Improve mobile input handling */
+@media screen and (max-width: 599px) {
+    .terminal-input {
+        font-size: 16px; /* Prevent iOS zoom on focus */
+    }
+    
+    /* Add padding when virtual keyboard is visible */
+    .terminal-messages.keyboard-visible {
+        padding-bottom: 270px; /* Approximate height of virtual keyboard */
     }
 }
 
@@ -529,41 +575,8 @@ body::before {
     .terminal-main {
         height: -webkit-fill-available;
     }
-}
-
-/* Improve scrolling on mobile */
-.terminal-messages {
-    -webkit-overflow-scrolling: touch;
-    overscroll-behavior-y: contain;
-}
-
-/* Make sure content doesn't overflow */
-.command {
-    word-break: break-word;
-}
-
-.response {
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-}
-
-/* Add these new styles */
-.messages-container {
-    display: flex;
-    flex-direction: column;
-    min-height: 0;
-    /* Important for scroll to work */
-}
-
-/* If you still need iOS fixes */
-@supports (-webkit-touch-callout: none) {
-    .terminal-main {
+    
+    .terminal-messages {
         height: -webkit-fill-available;
     }
 }
-
-@media screen and (max-width: 599px) {
-    input, select, textarea {
-      font-size: 16px;
-    }
-  }
