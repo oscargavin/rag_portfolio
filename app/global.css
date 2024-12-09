@@ -478,123 +478,49 @@ body::before {
     position: relative;
 }
 
-/* Add/modify these styles in your CSS */
-
-/* Base responsive adjustments */
 @media screen and (max-width: 768px) {
     .terminal-main {
         width: 100%;
         height: 100vh;
+        height: 100dvh; /* dynamic viewport height */
         margin: 0;
         border-radius: 0;
-        display: flex;
-        flex-direction: column;
-    }
-
-    .terminal-header {
-        padding: 12px 15px;
-        flex-direction: row;
-        /* Keep it row instead of column */
-        align-items: center;
-        gap: 12px;
-    }
-
-    .terminal-header h1 {
-        font-size: 0.85rem;
-    }
-
-    .terminal-header p {
-        font-size: 0.75rem;
+        position: relative;
     }
 
     .terminal-messages {
-        flex: 1;
+        position: absolute;
+        top: 60px; /* Height of header */
+        /* Adjust bottom space based on safe area */
+        bottom: calc(70px + env(safe-area-inset-bottom, 0px));
+        left: 0;
+        right: 0;
         overflow-y: auto;
         padding: 15px;
     }
 
-    .terminal-messages.populated {
-        height: auto;
-        /* Remove fixed height */
-    }
-
-    .response {
-        padding: 8px 15px;
-        font-size: 0.9rem;
-    }
-
-    .user-input {
-        flex-wrap: wrap;
-        gap: 6px;
-        font-size: 0.9rem;
-    }
-
     .terminal-form {
+        position: fixed;
+        bottom: env(safe-area-inset-bottom, 0px); /* Move up by safe area amount */
+        left: 0;
+        right: 0;
         width: 100%;
         padding: 15px;
         background: rgba(42, 43, 44, 0.95);
+        z-index: 10;
     }
 
-    .terminal-input {
-        font-size: 0.9rem;
+    /* Add for devices with bottom bars */
+    @supports (padding-bottom: env(safe-area-inset-bottom)) {
+        .terminal-form {
+            padding-bottom: max(15px, env(safe-area-inset-bottom, 15px));
+        }
     }
 
-    /* Adjust command prompt on mobile */
-    .prompt {
-        font-size: 0.85rem;
-        white-space: nowrap;
-    }
-
-    /* Add same padding to welcome container */
+    /* Add padding to content to prevent overlap */
+    .messages-container,
     .welcome-container {
-        padding-top: 20px;
-        padding-bottom: 40px;
-    }
-
-    .messages-container {
-        padding-top: 20px;
-        padding-bottom: 40px;
-        /* Larger bottom padding for better visibility of last message */
-    }
-
-    .help-content p {
-        font-size: 0.85rem;
-        white-space: nowrap;
-        overflow-x: auto;
-        padding-bottom: 4px;
-    }
-
-    /* Adjust markdown styles for mobile */
-    .response .header-1 {
-        font-size: 1.2em;
-    }
-
-    .response .header-2 {
-        font-size: 1.1em;
-    }
-
-    .response .header-3 {
-        font-size: 1em;
-    }
-
-    .response .list-item {
-        padding-left: 15px;
-    }
-
-    .terminal-title-section {
-        /* Add this new class to your title section */
-        flex: 1;
-    }
-
-    .terminal-controls {
-        margin-right: 10px;
-        /* Slightly reduce margin on mobile */
-    }
-
-    /* Adjust dot sizes for mobile */
-    .control-dot {
-        width: 10px;
-        height: 10px;
+        padding-bottom: 20px;
     }
 }
 
