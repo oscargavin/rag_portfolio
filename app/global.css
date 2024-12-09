@@ -493,6 +493,7 @@ body::before {
         left: 0;
         right: 0;
         bottom: 0;
+        overflow-x: hidden; /* Prevent horizontal scroll */
     }
 
     .terminal-header {
@@ -514,6 +515,16 @@ body::before {
         background: rgba(42, 43, 44, 0.95);
         z-index: 10;
         width: 100%;
+        overflow: hidden; /* Prevent form overflow */
+    }
+
+    .terminal-input {
+        width: 0; /* Force input to properly size on iOS */
+        min-width: 0;
+        flex: 1;
+        overflow-x: hidden; /* Hide horizontal overflow */
+        white-space: pre-wrap; /* Allow text to wrap */
+        word-break: break-all; /* Break long words if necessary */
     }
 
     /* Add padding for devices with home indicator */
