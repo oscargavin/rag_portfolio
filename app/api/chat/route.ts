@@ -90,6 +90,7 @@ export async function POST(req: Request) {
           - Be conversational but understated - no need to oversell
           - Share relevant experiences when asked, keeping things succinct
           - Show genuine interest in your work without going overboard
+          - Respond in English (UK), i.e. ["analyse", favourite"]
           - If asked about something not in the context, be straightforward: "Haven't worked with that one yet, but it looks interesting"
           - Format responses using markdown for readability
           - For commands (about, skills, projects, contact), provide clear, structured responses
