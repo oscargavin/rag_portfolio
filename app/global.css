@@ -524,25 +524,6 @@ body::before {
     }
 }
 
-/* Handle very small screens */
-@media screen and (max-width: 380px) {
-    .terminal-header h1 {
-        font-size: 0.8rem;
-    }
-
-    .prompt {
-        font-size: 0.8rem;
-    }
-
-    .terminal-input {
-        font-size: 0.85rem;
-    }
-
-    .response {
-        font-size: 0.85rem;
-    }
-}
-
 /* Fix iOS height issues */
 @supports (-webkit-touch-callout: none) {
     .terminal-main {
@@ -580,3 +561,9 @@ body::before {
         height: -webkit-fill-available;
     }
 }
+
+@media screen and (max-width: 599px) {
+    input, select, textarea {
+      font-size: 16px;
+    }
+  }
