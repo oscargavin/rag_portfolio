@@ -270,9 +270,6 @@ const Home = () => {
 
       {/* Input Form - Add appropriate ARIA labels */}
       <form onSubmit={handleSubmit} className="terminal-form" role="form">
-        <label htmlFor="terminal-input" className="sr-only">
-          Enter command
-        </label>
         <span className="prompt" aria-hidden="true">
           visitor@oscar:~$
         </span>
