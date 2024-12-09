@@ -17,7 +17,7 @@ const openai = new OpenAI({ apiKey: OPENAI_API_KEY })
 
 const pfData =
     [
-        'https://www.ogavin.com'
+        'https://www.ogavin/info.com'
     ]
 
 const client = new DataAPIClient(ASTRA_DB_APPLICATION_TOKEN)
