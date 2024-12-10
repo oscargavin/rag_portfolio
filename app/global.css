@@ -686,7 +686,9 @@ body::before {
     }
 
     .terminal-input {
-
+        height: 28px;
+        /* Consistent height */
+        line-height: 28px;
         font-size: 0.66em;
         /* Override any other styles */
         padding: 0 4px;
