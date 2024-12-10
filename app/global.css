@@ -1,9 +1,10 @@
 /* Modern Terminal Theme */
 :root {
     --terminal-bg: #1a1b1c;
-    --terminal-text: #33ff00;
-    --terminal-text-dim: rgba(51, 255, 0, 0.7);
-    --terminal-prompt: #33ff00;
+    /* Update the green to be easier on eyes */
+    --terminal-text: #39ff84;
+    --terminal-text-dim: rgba(57, 255, 132, 0.7);
+    --terminal-prompt: #39ff84;
     --terminal-border: #2a2b2c;
     --terminal-selection: rgba(51, 255, 0, 0.2);
     --terminal-header: #2a2b2c;
@@ -20,7 +21,6 @@
 body {
     margin: 0;
     padding: 0;
-    background-image: url('./assets/bg.jpg');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
@@ -39,9 +39,10 @@ body::before {
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(45deg,
-            rgba(0, 0, 0, 0.7),
-            rgba(0, 0, 0, 0.5));
+    background: linear-gradient(135deg,
+            rgba(0, 0, 0, 0.7) 0%,
+            rgba(0, 0, 0, 0.5) 50%,
+            rgba(0, 20, 0, 0.6) 100%);
     z-index: 0;
 }
 
@@ -52,12 +53,16 @@ body::before {
     max-width: 1000px;
     height: 85vh;
     margin: 20px auto;
-    background: rgba(26, 27, 28, 0.8);
-    backdrop-filter: blur(10px);
+    background: rgba(26, 27, 28, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    /* Update border to be more subtle */
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    /* Add subtle glow */
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3),
+        0 0 2px rgba(51, 255, 0, 0.1);
     -webkit-backdrop-filter: blur(10px);
     border-radius: 10px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
     overflow: hidden;
     display: flex;
     flex-direction: column;
@@ -75,6 +80,11 @@ body::before {
     justify-content: space-between;
     align-items: center;
     position: relative;
+    transition: background-color 0.3s ease;
+}
+
+.terminal-header:hover {
+    background: rgba(42, 43, 44, 0.9);
 }
 
 .terminal-form {
@@ -97,6 +107,19 @@ body::before {
 .terminal-header p {
     font-size: 0.8rem;
     opacity: 0.7;
+}
+
+.terminal-header::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(to right,
+            rgba(51, 255, 0, 0),
+            rgba(51, 255, 0, 0.2),
+            rgba(51, 255, 0, 0));
 }
 
 /* Messages section with improved scrolling */
@@ -123,6 +146,24 @@ body::before {
 .terminal-messages::-webkit-scrollbar-thumb {
     background: var(--terminal-text-dim);
     border-radius: 10px;
+}
+
+/* Add a subtle pulse to the cursor */
+.terminal-input::after {
+    content: '█';
+    animation: pulse 1.2s infinite;
+    opacity: 0.7;
+}
+
+/* Add subtle hover states to commands */
+.help-content p {
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.help-content p:hover {
+    transform: translateX(5px);
+    color: #39ff84;
+    /* Brighter green on hover */
 }
 
 /* Welcome screen with improved layout */
@@ -179,9 +220,23 @@ body::before {
     gap: 8px;
 }
 
+/* Add to your CSS */
 .prompt::before {
     content: "→";
     color: var(--terminal-text);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
 }
 
 .command {
@@ -189,10 +244,10 @@ body::before {
 }
 
 .response {
-    padding: 8px 25px;
-    color: var(--terminal-text-dim);
-    line-height: 1.6;
-    white-space: pre-wrap;
+    /* Add subtle indent for better readability */
+    border-left: 2px solid rgba(51, 255, 0, 0.1);
+    margin-left: 10px;
+    padding-left: 15px;
 }
 
 /* Modern loading cursor */
@@ -483,48 +538,61 @@ body::before {
     .terminal-main {
         width: 100%;
         height: 100vh;
-        height: 100dvh; /* Use dynamic viewport height */
+        height: 100dvh;
+        /* Use dynamic viewport height */
         margin: 0;
         border-radius: 0;
         display: flex;
         flex-direction: column;
-        position: fixed; /* Change to fixed */
+        position: fixed;
+        /* Change to fixed */
         top: 0;
         left: 0;
         right: 0;
         bottom: 0;
-        overflow-x: hidden; /* Prevent horizontal scroll */
+        overflow-x: hidden;
+        /* Prevent horizontal scroll */
     }
 
     .terminal-header {
-        flex-shrink: 0; /* Prevent header from shrinking */
+        flex-shrink: 0;
+        /* Prevent header from shrinking */
     }
 
     .terminal-messages {
         flex: 1;
         overflow-y: auto;
         padding: 15px;
-        position: relative; /* Change from absolute to relative */
-        height: auto; /* Remove fixed height */
+        position: relative;
+        /* Change from absolute to relative */
+        height: auto;
+        /* Remove fixed height */
     }
 
     .terminal-form {
-        flex-shrink: 0; /* Prevent form from shrinking */
-        position: relative; /* Change from fixed to relative */
+        flex-shrink: 0;
+        /* Prevent form from shrinking */
+        position: relative;
+        /* Change from fixed to relative */
         padding: 15px;
         background: rgba(42, 43, 44, 0.95);
         z-index: 10;
         width: 100%;
-        overflow: hidden; /* Prevent form overflow */
+        overflow: hidden;
+        /* Prevent form overflow */
     }
 
     .terminal-input {
-        width: 0; /* Force input to properly size on iOS */
+        width: 0;
+        /* Force input to properly size on iOS */
         min-width: 0;
         flex: 1;
-        overflow-x: hidden; /* Hide horizontal overflow */
-        white-space: pre-wrap; /* Allow text to wrap */
-        word-break: break-all; /* Break long words if necessary */
+        overflow-x: hidden;
+        /* Hide horizontal overflow */
+        white-space: pre-wrap;
+        /* Allow text to wrap */
+        word-break: break-all;
+        /* Break long words if necessary */
     }
 
     /* Add padding for devices with home indicator */
@@ -545,34 +613,44 @@ body::before {
 
     .user-input {
         display: flex;
-        flex-wrap: nowrap; /* Prevent prompt from wrapping */
-        align-items: flex-start; /* Align items to top */
+        flex-wrap: nowrap;
+        /* Prevent prompt from wrapping */
+        align-items: flex-start;
+        /* Align items to top */
         gap: 8px;
         width: 100%;
     }
-    
+
     .prompt {
-        flex-shrink: 0; /* Prevent prompt from shrinking */
-        white-space: nowrap; /* Keep prompt on one line */
+        flex-shrink: 0;
+        /* Prevent prompt from shrinking */
+        white-space: nowrap;
+        /* Keep prompt on one line */
     }
-    
+
     .command {
-        word-break: break-word; /* Better word breaking for commands */
-        white-space: pre-wrap; /* Preserve whitespace but allow wrapping */
-        flex: 1; /* Take remaining space */
-        min-width: 0; /* Allow text to wrap instead of overflow */
+        word-break: break-word;
+        /* Better word breaking for commands */
+        white-space: pre-wrap;
+        /* Preserve whitespace but allow wrapping */
+        flex: 1;
+        /* Take remaining space */
+        min-width: 0;
+        /* Allow text to wrap instead of overflow */
     }
 }
 
 /* Improve mobile input handling */
 @media screen and (max-width: 599px) {
     .terminal-input {
-        font-size: 16px; /* Prevent iOS zoom on focus */
+        font-size: 16px;
+        /* Prevent iOS zoom on focus */
     }
-    
+
     /* Add padding when virtual keyboard is visible */
     .terminal-messages.keyboard-visible {
-        padding-bottom: 270px; /* Approximate height of virtual keyboard */
+        padding-bottom: 270px;
+        /* Approximate height of virtual keyboard */
     }
 }
 
@@ -581,7 +659,7 @@ body::before {
     .terminal-main {
         height: -webkit-fill-available;
     }
-    
+
     .terminal-messages {
         height: -webkit-fill-available;
     }

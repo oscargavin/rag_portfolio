@@ -2,6 +2,7 @@
 
 import { useChat } from "ai/react";
 import { useEffect, useRef, useState } from "react";
+import MatrixBackground from "./components/MatrixBackground";
 
 const parseMarkdown = (text: string) => {
   return (
@@ -172,118 +173,121 @@ const Home = () => {
   };
 
   return (
-    <main className="terminal-main" role="main">
-      {/* Terminal Controls - Add aria-label */}
-      <div className="terminal-header" role="banner">
-        <div className="terminal-controls" aria-label="Window controls">
-          {/* Make decorative dots not focusable */}
-          <span
-            className="control-dot red"
-            aria-hidden="true"
-            role="presentation"
-          ></span>
-          <span
-            className="control-dot yellow"
-            aria-hidden="true"
-            role="presentation"
-          ></span>
-          <span
-            className="control-dot green"
-            aria-hidden="true"
-            role="presentation"
-          ></span>
+    <>
+      <MatrixBackground />
+      <main className="terminal-main" role="main">
+        {/* Terminal Controls - Add aria-label */}
+        <div className="terminal-header" role="banner">
+          <div className="terminal-controls" aria-label="Window controls">
+            {/* Make decorative dots not focusable */}
+            <span
+              className="control-dot red"
+              aria-hidden="true"
+              role="presentation"
+            ></span>
+            <span
+              className="control-dot yellow"
+              aria-hidden="true"
+              role="presentation"
+            ></span>
+            <span
+              className="control-dot green"
+              aria-hidden="true"
+              role="presentation"
+            ></span>
+          </div>
+          <div className="terminal-title-section">
+            <h1>Oscar Gavin Terminal [Version 1.2.0]</h1>
+            <p>Type 'help' for available commands</p>
+          </div>
         </div>
-        <div className="terminal-title-section">
-          <h1>Oscar Gavin Terminal [Version 1.0.0]</h1>
-          <p>Type 'help' for available commands</p>
-        </div>
-      </div>
 
-      {/* Messages Container - Add appropriate ARIA labels */}
-      <section
-        className={`terminal-messages ${noMessages ? "" : "populated"} ${
-          isKeyboardVisible ? "keyboard-visible" : ""
-        }`}
-        role="log"
-        aria-live="polite"
-        aria-label="Terminal output"
-      >
-        {noMessages ? (
-          <div className="welcome-container">
-            <p className="welcome-text">
-              Welcome to Oscar Gavin's terminal interface. Ask me anything about
-              my skills, experience, or interests.
-            </p>
-            <p className="prompt-text" aria-hidden="true">
-              visitor@oscar:~$
-            </p>
-            <div className="help-content" role="list">
-              <p role="listitem">Available commands:</p>
-              {/* Add role="listitem" to each command */}
-              <p role="listitem">$ about - Learn about Oscar Gavin</p>
-              <p role="listitem">$ skills - View technical skills</p>
-              <p role="listitem">$ projects - Browse recent projects</p>
-              <p role="listitem">$ contact - Get contact information</p>
-              <p role="listitem">$ download cv - Download my CV</p>
-              <p role="listitem">$ clear - Clear terminal history</p>
-              <p role="listitem">$ help - Show this help message</p>
+        {/* Messages Container - Add appropriate ARIA labels */}
+        <section
+          className={`terminal-messages ${noMessages ? "" : "populated"} ${isKeyboardVisible ? "keyboard-visible" : ""
+            }`}
+          role="log"
+          aria-live="polite"
+          aria-label="Terminal output"
+        >
+          {noMessages ? (
+            <div className="welcome-container">
+              <p className="welcome-text">
+                Welcome to Oscar Gavin's terminal interface. Ask me anything about
+                my skills, experience, or interests.
+              </p>
+              <p className="prompt-text" aria-hidden="true">
+                visitor@oscar:~$
+              </p>
+              <div className="help-content" role="list">
+                <p role="listitem">Available commands:</p>
+                {/* Add role="listitem" to each command */}
+                <p role="listitem">$ about - Learn about Oscar Gavin</p>
+                <p role="listitem">$ skills - View technical skills</p>
+                <p role="listitem">$ projects - Browse recent projects</p>
+                <p role="listitem">$ contact - Get contact information</p>
+                <p role="listitem">$ download cv - Download my CV</p>
+                <p role="listitem">$ clear - Clear terminal history</p>
+                <p role="listitem">$ help - Show this help message</p>
+              </div>
             </div>
-          </div>
-        ) : (
-          <div className="messages-container">
-            {messages.map((message, index) => (
-              <div
-                key={`message-${index}`}
-                className="terminal-line"
-                role="listitem"
-              >
-                {message.role === "user" ? (
-                  <div className="user-input">
-                    <span className="prompt" aria-hidden="true">
-                      visitor@oscar:~$
-                    </span>
-                    <span className="command">{message.content}</span>
-                  </div>
-                ) : (
-                  <div
-                    className="response"
-                    dangerouslySetInnerHTML={{
-                      __html: parseMarkdown(message.content),
-                    }}
-                  />
-                )}
-              </div>
-            ))}
-            {isLoading && (
-              <div
-                className="loading-cursor"
-                role="status"
-                aria-label="Loading"
-              >
-                <span aria-hidden="true"></span>
-              </div>
-            )}
-            <div ref={messagesEndRef} tabIndex={-1} />
-          </div>
-        )}
-      </section>
+          ) : (
+            <div className="messages-container">
+              {messages.map((message, index) => (
+                <div
+                  key={`message-${index}`}
+                  className="terminal-line"
+                  role="listitem"
+                >
+                  {message.role === "user" ? (
+                    <div className="user-input">
+                      <span className="prompt" aria-hidden="true">
+                        visitor@oscar:~$
+                      </span>
+                      <span className="command">{message.content}</span>
+                    </div>
+                  ) : (
+                    <div
+                      className="response"
+                      dangerouslySetInnerHTML={{
+                        __html: parseMarkdown(message.content),
+                      }}
+                    />
+                  )}
+                </div>
+              ))}
+              {isLoading && (
+                <div
+                  className="loading-cursor"
+                  role="status"
+                  aria-label="Loading"
+                >
+                  <span aria-hidden="true"></span>
+                </div>
+              )}
+              <div ref={messagesEndRef} tabIndex={-1} />
+            </div>
+          )}
+        </section>
 
-      {/* Input Form - Add appropriate ARIA labels */}
-      <form onSubmit={handleSubmit} className="terminal-form" role="form">
-        <span className="prompt" aria-hidden="true">
-          visitor@oscar:~$
-        </span>
-        <input
-          id="terminal-input"
-          type="text"
-          value={input}
-          onChange={handleInputChange}
-          className="terminal-input"
-          placeholder="Type a command..."
-          aria-label="Terminal input"
-        />
-      </form>
-    </main>
+        {/* Input Form - Add appropriate ARIA labels */}
+        <form onSubmit={handleSubmit} className="terminal-form" role="form">
+          <span className="prompt" aria-hidden="true">
+            visitor@oscar:~$
+          </span>
+          <input
+            id="terminal-input"
+            type="text"
+            value={input}
+            onChange={handleInputChange}
+            className="terminal-input"
+            placeholder="Type a command..."
+            aria-label="Terminal input"
+          />
+        </form>
+      </main>
+    </>
+
   );
 };
 
