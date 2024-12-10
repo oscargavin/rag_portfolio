@@ -3,6 +3,7 @@
 import { useChat } from "ai/react";
 import { useEffect, useRef, useState } from "react";
 import MatrixBackground from "./components/MatrixBackground";
+import { ArrowRight } from 'lucide-react';
 
 const parseMarkdown = (text: string) => {
   return (
@@ -284,6 +285,13 @@ const Home = () => {
             placeholder="Type a command..."
             aria-label="Terminal input"
           />
+          <button
+            type="submit"
+            className="send-button"
+            aria-label="Send command"
+          >
+            <ArrowRight size={18} strokeWidth={1.5} className="send-icon" />
+          </button>
         </form>
       </main>
     </>

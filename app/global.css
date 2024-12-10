@@ -533,6 +533,26 @@ body::before {
     position: relative;
 }
 
+.send-button {
+    display: none;
+    /* Hidden by default on desktop */
+    background: transparent;
+    border: none;
+    color: var(--terminal-text);
+    cursor: pointer;
+    padding: 8px;
+    opacity: 0.8;
+    transition: opacity 0.2s ease;
+}
+
+.send-button:hover {
+    opacity: 1;
+}
+
+.send-icon {
+    color: var(--terminal-text);
+}
+
 /* Mobile-specific layout fixes */
 @media screen and (max-width: 768px) {
     .terminal-main {
@@ -569,12 +589,20 @@ body::before {
         /* Remove fixed height */
     }
 
+    .send-button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
     .terminal-form {
         flex-shrink: 0;
         /* Prevent form from shrinking */
         position: relative;
         /* Change from fixed to relative */
         padding: 15px;
+        padding-right: 45px;
+        /* Make room for button */
         background: rgba(42, 43, 44, 0.95);
         z-index: 10;
         width: 100%;
@@ -583,6 +611,8 @@ body::before {
     }
 
     .terminal-input {
+        font-size: 0.66em;
+        /* Reduce placeholder text size */
         width: 0;
         /* Force input to properly size on iOS */
         min-width: 0;
@@ -593,6 +623,7 @@ body::before {
         /* Allow text to wrap */
         word-break: break-all;
         /* Break long words if necessary */
+        padding-right: 35px;
     }
 
     /* Add padding for devices with home indicator */
@@ -622,6 +653,8 @@ body::before {
     }
 
     .prompt {
+        font-size: 0.66em;
+        /* Reduce the visitor@oscar text */
         flex-shrink: 0;
         /* Prevent prompt from shrinking */
         white-space: nowrap;
