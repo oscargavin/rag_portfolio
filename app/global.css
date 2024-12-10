@@ -725,12 +725,31 @@ body::before {
 
     .user-input {
         display: flex;
-        flex-wrap: nowrap;
-        /* Prevent prompt from wrapping */
-        align-items: flex-start;
-        /* Align items to top */
+        align-items: center;
+        /* Center align items vertically */
         gap: 8px;
-        width: 100%;
+        min-height: 24px;
+        padding: 0;
+    }
+
+    .user-input .prompt {
+        display: flex;
+        align-items: center;
+        font-size: 0.66em;
+        margin: 0;
+        padding: 0;
+        line-height: 24px;
+        /* Match the container height */
+    }
+
+    .user-input .command {
+        display: flex;
+        align-items: center;
+        font-size: 0.66em;
+        line-height: 24px;
+        /* Match the line height */
+        margin: 0;
+        padding: 0;
     }
 
     /* Mobile prompt text */
@@ -740,9 +759,7 @@ body::before {
         display: flex;
         align-items: center;
         margin-top: 0;
-        /* Remove any margin */
         padding-top: 0;
-        /* Remove any padding */
     }
 
     .command {
