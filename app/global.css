@@ -88,14 +88,15 @@ body::before {
 }
 
 .terminal-form {
-    padding: 20px;
-    background: rgba(42, 43, 44, 0.8);
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 12px 20px;
+    /* Reduced vertical padding */
+    background: rgba(42, 43, 44, 0.95);
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
+    /* Consistent gap */
+    position: relative;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .terminal-header h1 {
@@ -543,6 +544,14 @@ body::before {
     padding: 8px;
     opacity: 0.8;
     transition: opacity 0.2s ease;
+    position: absolute;
+    /* Add this */
+    right: 12px;
+    /* Add this */
+    top: 50%;
+    /* Add this */
+    transform: translateY(-50%);
+    /* Add this */
 }
 
 .send-button:hover {
@@ -551,6 +560,68 @@ body::before {
 
 .send-icon {
     color: var(--terminal-text);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.send-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    color: var(--terminal-text);
+    cursor: pointer;
+    padding: 8px;
+    opacity: 0.7;
+    /* Slightly reduced default opacity */
+    transition: all 0.2s ease;
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+/* Desktop hover effects */
+@media (hover: hover) {
+    .send-button:hover {
+        opacity: 1;
+        transform: translateY(-50%) scale(1.1);
+        /* Slight scale up */
+        filter: brightness(1.2);
+        /* Brighter on hover */
+    }
+
+    .send-button:active {
+        transform: translateY(-50%) scale(0.95);
+        /* Scale down when clicked */
+    }
+}
+
+/* Keep mobile simple and responsive */
+@media (hover: none) {
+    .send-button:active {
+        opacity: 1;
+    }
+}
+
+/* Update terminal form to always have space for the button */
+.terminal-form {
+    padding: 12px 20px;
+    padding-right: 45px;
+    /* Space for button */
+    background: rgba(42, 43, 44, 0.95);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    position: relative;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Update input to always have right padding */
+.terminal-input {
+    padding-right: 35px;
 }
 
 /* Mobile-specific layout fixes */
@@ -591,27 +662,35 @@ body::before {
 
     .send-button {
         display: flex;
-        align-items: center;
-        justify-content: center;
+        /* Show on mobile */
     }
 
     .terminal-form {
         flex-shrink: 0;
         /* Prevent form from shrinking */
-        position: relative;
-        /* Change from fixed to relative */
-        padding: 15px;
+        padding: 12px 15px;
         padding-right: 45px;
+        /* Space for button */
+        position: relative;
+        /* Ensure this is here */
+        /* Space for button */
+        gap: 8px;
+        /* Slightly smaller gap on mobile */
         /* Make room for button */
         background: rgba(42, 43, 44, 0.95);
         z-index: 10;
         width: 100%;
         overflow: hidden;
+
         /* Prevent form overflow */
     }
 
     .terminal-input {
+
         font-size: 0.66em;
+        /* Override any other styles */
+        padding: 0 4px;
+        /* Reduced padding */
         /* Reduce placeholder text size */
         width: 0;
         /* Force input to properly size on iOS */
@@ -652,13 +731,16 @@ body::before {
         width: 100%;
     }
 
+    /* Mobile prompt text */
     .prompt {
         font-size: 0.66em;
-        /* Reduce the visitor@oscar text */
-        flex-shrink: 0;
-        /* Prevent prompt from shrinking */
-        white-space: nowrap;
-        /* Keep prompt on one line */
+        height: 100%;
+        display: flex;
+        align-items: center;
+        margin-top: 0;
+        /* Remove any margin */
+        padding-top: 0;
+        /* Remove any padding */
     }
 
     .command {
@@ -675,10 +757,6 @@ body::before {
 
 /* Improve mobile input handling */
 @media screen and (max-width: 599px) {
-    .terminal-input {
-        font-size: 16px;
-        /* Prevent iOS zoom on focus */
-    }
 
     /* Add padding when virtual keyboard is visible */
     .terminal-messages.keyboard-visible {
